@@ -1,6 +1,8 @@
 import io
+import os
 
 import numpy as np
+import uvicorn
 from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import Response
 from fastapi.staticfiles import StaticFiles
@@ -32,3 +34,7 @@ async def remove_bg(file: UploadFile = File(...)):
 
 
 app.mount("/", StaticFiles(directory="../frontend", html=True), name="frontend")
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8080))
+    uvicorn.run("backend.api.main:app", host="0.0.0.0", port=port)
