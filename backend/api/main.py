@@ -1,5 +1,6 @@
 import io
 import os
+from pathlib import Path
 
 import numpy as np
 import uvicorn
@@ -33,7 +34,10 @@ async def remove_bg(file: UploadFile = File(...)):
     return Response(content=buffer.getvalue(), media_type="image/png")
 
 
-app.mount("/", StaticFiles(directory="../frontend", html=True), name="frontend")
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+FRONTEND_DIR = BASE_DIR / "frontend"
+
+app.mount("/", StaticFiles(directory=FRONTEND_DIR, html=True), name="frontend")
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8080))
